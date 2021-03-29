@@ -17,24 +17,14 @@ class PembelianController extends Controller
      */
     public function index()
     {
-        $lastId = Pembelian::orderBy('created_at','desc')->first();
-         $data['kode']= sprintf('P%06d',substr($lastId,1)+1);
+        $lastId = Pembelian::select('kode_masuk')->orderBy('created_at','desc')->first();
+        // dd($lastId);
+         $data['kode']= ($lastId==null?'P00000001':sprintf('P%08d',substr($lastId->kode_masuk,1)+1));
          $data['pemasok']= Pemasok::get();
          $data['barang'] = Barang::get();
         return view('transaksi_pembelian/index')->with($data);
     }
-    public function kodePembelian()
-    {
-        $dataPembelian = DB::table('pembelian')->orderBy('id')->get('kode_masuk');
-        foreach ($dataPembelian as $key => $value) {
-            $kodeBaru = $value->kode_masuk;
-        }
-        $noUrut = (int) substr($kodeBaru, 3, 5);
-        $noUrut++;
-        $char = "P-";
-        $urut = $char.sprintf("%05s", $noUrut);
-        return $urut;
-    }
+    
     /**
      * Show the form for creating a new resource.
      *
