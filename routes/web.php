@@ -14,3 +14,4 @@
 Route::get('/','DashboardController@index');
 route::resource('datapemasok','PemasokController');
 route::resource('databarang','BarangController');
+route::resource('transaksi_pembelian','PembelianController');
